@@ -83,7 +83,7 @@ export default class Position {
    *
    * The inner height of the window (= the visible area) is the maximum
    * possible height for the stretching sidebar. This height must be deducted
-   * by the height of the fixed header (56px). Depending on the page y-offset,
+   * by the height of the fixed header (48px). Depending on the page y-offset,
    * the top offset of the sidebar must be taken into account, as well as the
    * case where the window is scrolled beyond the sidebar container.
    *

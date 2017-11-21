@@ -40,6 +40,7 @@ pip show mkdocs-material | grep -E ^Version
 
 ### 2.1.1 <small>_ November 21, 2017</small>
 
+* Added Portuguese translations
 * Replaced deprecated `babel-preset-es2015` with `babel-preset-env`
 * Refactored Gulp build pipeline with Webpack
 * Removed right border on sidebars

@@ -68,7 +68,7 @@ export default class Blur {
   /**
    * Update blur states
    *
-   * Deduct the static offset of the header (56px) and sidebar offset (24px),
+   * Deduct the static offset of the header (48px) and sidebar offset (24px),
    * see _permalinks.scss for more information.
    */
   update() {
@@ -89,7 +89,7 @@ export default class Blur {
     /* Scroll direction is down */
     if (this.offset_ <= offset) {
       for (let i = this.index_ + 1; i < this.els_.length; i++) {
-        if (this.anchors_[i].offsetTop - (56 + 24) <= offset) {
+        if (this.anchors_[i].offsetTop - (48 + 24) <= offset) {
           if (i > 0)
             this.els_[i - 1].dataset.mdState = "blur"
           this.index_ = i
@@ -101,7 +101,7 @@ export default class Blur {
     /* Scroll direction is up */
     } else {
       for (let i = this.index_; i >= 0; i--) {
-        if (this.anchors_[i].offsetTop - (56 + 24) > offset) {
+        if (this.anchors_[i].offsetTop - (48 + 24) > offset) {
           if (i > 0)
             this.els_[i - 1].dataset.mdState = ""
         } else {

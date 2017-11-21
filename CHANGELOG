@@ -1,5 +1,6 @@
 mkdocs-material-2.1.1 (2017-11-21)
 
+  * Added Portuguese translations
   * Replaced deprecated babel-preset-es2015 with babel-preset-env
   * Refactored Gulp build pipeline with Webpack
   * Removed right border on sidebars
