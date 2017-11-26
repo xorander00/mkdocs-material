@@ -24,34 +24,61 @@
  * Class
  * ------------------------------------------------------------------------- */
 
-export default class ScrollObserver {
+export default class Viewport {
 
   /**
    * Update scroll state
    */
-  update = () => {
-    this.props.onScroll({
-      get offset() {
-        return document.scrollingElement.scrollTop
-      },
-      get height() {
-        return document.scrollingElement.scrollHeight
-      }
-    })
+  updateScroll = () => {
+    if (typeof this.props.onScroll === "function")
+      this.props.onScroll({
+        get offset() {
+          return document.scrollingElement.scrollTop
+        },
+        get height() {
+          return document.scrollingElement.scrollHeight
+        }
+      })
   }
 
   /**
-   * Register scroll listener
+   * Update viewport state
+   */
+  updateResize = () => {
+    if (typeof this.props.onResize === "function")
+      this.props.onResize({
+        get offset() {
+          return document.scrollingElement.scrollTop
+        },
+        get height() {
+          return document.scrollingElement.scrollHeight
+        }
+      })
+  }
+
+  /**
+   * Register scroll and viewport listeners
    */
   componentDidMount() {
-    addEventListener("scroll", this.update, { passive: true })
+    addEventListener("scroll", this.updateScroll, { passive: true })
+    ;["resize", "orientationchange"].forEach(event => {
+      addEventListener(event, this.updateResize, { passive: true })
+    })
+
+    /* Initial render - call resize handler first, as a resize might will most
+       likely invalidate all previous scroll position */
+    this.updateResize()
+    this.updateScroll()
   }
 
   /**
-   * Unregister scroll listener
+   * Unregister scroll and viewport listeners
    */
   componentWillUnmount() {
-    removeEventListener("scroll", this.update, { passive: true })
+    removeEventListener("scroll", this.updateScroll, { passive: true })
+    ;["resize", "orientationchange"].forEach(event => {
+      removeEventListener(event, this.updateResize, { passive: true })
+    })
   }
 
   /**

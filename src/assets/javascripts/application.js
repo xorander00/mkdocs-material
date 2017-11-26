@@ -8,6 +8,8 @@ import "../stylesheets/application-palette.scss"
 import { render } from "preact"
 import "preact-dom"
 import initializeTabs from "./components/tabs"
+// import initializeHeaderShadow from "./components/header/Shadow"
+import initializeSidebar from "./components/sidebar/Position"
 
 import Clone from "./components/common/Clone"
 
@@ -18,6 +20,10 @@ const init = x => {
 
   setTimeout(() => {
     initializeTabs(document.querySelector("[data-md-component=tabs]"))
+    // initializeHeaderShadow(document.querySelector("[data-md-component=header]"), document.querySelector("[data-md-component=container]").parentNode)
+    initializeSidebar(document.querySelector("[data-md-component=navigation]"))
+
+    // TODO: need to write a registry, since we have multiple entrypoints
   }, 500)
 }
 

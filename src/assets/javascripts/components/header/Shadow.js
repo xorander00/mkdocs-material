@@ -21,57 +21,78 @@
  */
 
 import { render, Component } from "preact"
-import Clone from "./common/Clone"
-import ScrollObserver from "./common/ScrollObserver"
+
+import Clone from "../common/Clone"
+import Viewport from "../common/Viewport"
 
 /* ----------------------------------------------------------------------------
  * Class
  * ------------------------------------------------------------------------- */
 
-export class Tabs extends Component {
+export class HeaderShadow extends Component {
 
   /**
    * Constructor
-   *
-   * @constructor
-   * @param  {[type]} props [description]
-   * @return {[type]}       [description]
    */
   constructor(props) {
     super(props)
 
+    // let current = this.props.container
+    // while ((current = current.previousElementSibling)) {
+    //   console.log(this.state.offset, current.offsetHeight)
+    //   this.setState({ offset: this.state.offset + current.offsetHeight })
+    // }
+
     /* Set initial state */
     this.setState({
-      active: false
+      active: false,
+      offset: 0
     })
   }
 
+  // offset
+
   /**
    * Handle scroll event
-   *
-   * @param {[type]} ev [description]
    */
   handleScroll = ev => {
-    const active = ev.offset >=
-      this.base.children[0].offsetTop + (5 - 48) // TODO: put into constant
+
+    const active = ev.offset >= this.state.height
     if (active !== this.state.active) {
       this.setState({ active })
     }
   }
 
+  // TODO: container should be instantiated and passed as an object with a
+  // method to get the current height. This way we encapsulated everything
+  // This height should be updated on resize
+
   /**
-   * Register scroll handler and render tabs
-   *
-   * @return {VNode} Virtual node
+   * Handle scroll event
+   */
+  handleResize = ev => {
+    this.setState({ offset: 0 })
+
+    /* Update trigger offset */
+    let current = this.props.container
+    while ((current = current.previousElementSibling)) {
+      console.log(this.state.offset, current.offsetHeight)
+      this.setState({ offset: this.state.offset + current.offsetHeight })
+    }
+    console.log(this.state)
+  }
+
+  /**
+   * TODO
    */
   render() {
     return (
-      <ScrollObserver onScroll={this.handleScroll}>
-        <nav className="md-tabs" data-md-component="tabs"
-          data-md-state={this.state.active ? "hidden" : ""}>
+      <Viewport onScroll={this.handleScroll} onResize={this.handleResize}>
+        <header className="md-header" data-md-component="header"
+          data-md-state={this.state.active ? "shadow" : ""}>
           {this.props.children}
-        </nav>
-      </ScrollObserver>
+        </header>
+      </Viewport>
     )
   }
 }
@@ -87,12 +108,12 @@ export class Tabs extends Component {
  *
  * @return {VNode} Virtual node
  */
-export default el => {
+export default (el, container) => {
   return render(
-    <Tabs>
+    <HeaderShadow container={container}>
       {Array.prototype.map.call(el.children, child =>
         <Clone node={child} />
       )}
-    </Tabs>, el.parentNode, el
+    </HeaderShadow>, el.parentNode, el
   )
 }
