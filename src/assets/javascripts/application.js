@@ -5,10 +5,11 @@ import "../images/icons/gitlab.svg"
 import "../stylesheets/application.scss"
 import "../stylesheets/application-palette.scss"
 
-import { h, render } from "preact"
+import { render } from "preact"
 import "preact-dom"
-import Tabs from "./components/tabs"
-import StaticNode from "./components/common/StaticNode"
+import initializeTabs from "./components/tabs"
+
+import Clone from "./components/common/Clone"
 
 // this holds our rendered root element so we can re-render in response to HMR updates.
 
@@ -16,14 +17,7 @@ import StaticNode from "./components/common/StaticNode"
 const init = x => {
 
   setTimeout(() => {
-    const el = document.querySelector("[data-md-component=tabs]")
-    const nodes = Array.prototype.map.call(el.children, h)
-    const root = render(
-      <Tabs>
-        <StaticNode el={el.children[0]} />
-      </Tabs>, el.parentNode, el
-    )
-    console.log(root)
+    initializeTabs(document.querySelector("[data-md-component=tabs]"))
   }, 500)
 }
 

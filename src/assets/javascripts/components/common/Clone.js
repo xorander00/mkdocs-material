@@ -20,14 +20,20 @@
  * IN THE SOFTWARE.
  */
 
-import { h, Component } from "preact" // TODO: provide h
+import { h, Component } from "preact"
 
-export default class StaticNode extends Component {
+/* ----------------------------------------------------------------------------
+ * Class
+ * ------------------------------------------------------------------------- */
+
+export default class Clone extends Component {
 
   /**
-   * [getProps description]
-   * @param  {[type]} el [description]
-   * @return {[type]}    [description]
+   * Element attributes to properties mapping
+   *
+   * @param {Element} el - Element
+   *
+   * @return {Object} Properties
    */
   getProps(el) {
     return Object.keys(el.attributes)
@@ -39,19 +45,20 @@ export default class StaticNode extends Component {
   }
 
   /**
-   * [render description]
-   * @return {[type]} [description]
+   * Render node and its children recursively
+   *
+   * @return {string|Component} Component or text string
    */
   render() {
-    const { el } = this.props
-    if (el instanceof Element) {
-      return h(el.tagName.toLowerCase(), this.getProps(el),
-        Array.prototype.map.call(el.childNodes, child => {
-          return new StaticNode({ el: child }).render()
+    const { node } = this.props
+    if (node instanceof Element) {
+      return h(node.tagName.toLowerCase(), this.getProps(node),
+        Array.prototype.map.call(node.childNodes, child => {
+          return new Clone({ node: child }).render()
         })
       )
     } else {
-      return el.textContent
+      return node.textContent
     }
   }
 }

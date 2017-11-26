@@ -20,6 +20,10 @@
  * IN THE SOFTWARE.
  */
 
+/* ----------------------------------------------------------------------------
+ * Class
+ * ------------------------------------------------------------------------- */
+
 export default class ScrollObserver {
 
   /**
@@ -30,30 +34,32 @@ export default class ScrollObserver {
       get offset() {
         return document.scrollingElement.scrollTop
       },
-      get max() {
+      get height() {
         return document.scrollingElement.scrollHeight
       }
     })
   }
 
   /**
-   * [componentDidMount description]
+   * Register scroll listener
    */
   componentDidMount() {
     addEventListener("scroll", this.update, { passive: true })
   }
 
   /**
-   * [componentWillUnmount description]
+   * Unregister scroll listener
    */
   componentWillUnmount() {
     removeEventListener("scroll", this.update, { passive: true })
   }
 
   /**
-   * [render description]
-   * @param  {[type]} children [description]
-   * @return {[type]}          [description]
+   * Render wrapped node
+   *
+   * @param {object} props - Properties
+   *
+   * @return {VNode} Virtual node
    */
   render({ children: [child] }) {
     return typeof child === "function" ? child() : child

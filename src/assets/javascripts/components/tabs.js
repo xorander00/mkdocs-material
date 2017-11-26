@@ -20,78 +20,79 @@
  * IN THE SOFTWARE.
  */
 
-import { h, Component, render } from "preact" // TODO: provide h
-// import { VirtualNode } from "virtual-dom"
-// import Markup from "preact-markup"
-
+import { render, Component } from "preact"
+import Clone from "./common/Clone"
 import ScrollObserver from "./common/ScrollObserver"
-// import StaticNode from "./common/StaticNode"
-
-/* ----------------------------------------------------------------------------
- * Variables
- * ------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------
  * Class
  * ------------------------------------------------------------------------- */
 
-// TODO: use flow
+export class Tabs extends Component {
 
-export default class Tabs extends Component {
-
+  /**
+   * Constructor
+   *
+   * @constructor
+   * @param  {[type]} props [description]
+   * @return {[type]}       [description]
+   */
   constructor(props) {
     super(props)
+
+    /* Set initial state */
     this.setState({
       active: false
     })
-  }  // }
-
-  // https://www.npmjs.com/package/react-scroll-listener
-  // https://github.com/bloodyowl/react-media-queries !!!!!
-
-  componentWillMount() {
-    console.log("will mount", this.props)
-    // this.setState({ content: this.props.children[0] })
-    // {render()}
   }
 
-  // componentDidMount() {
-  //   this.base
-  // }
-
-  // shouldComponentUpdate() {
-  //   return false
-  // }
-
-  //
-  // componentWillUnmount() {
-  //   document.documentElement.removeEventListener("scroll", this.handleScroll)
-  // }
-
   /**
-   * [handleScroll description]
-   * @param  {[type]} ev [description]
+   * Handle scroll event
+   *
+   * @param {[type]} ev [description]
    */
   handleScroll = ev => {
     const active = ev.offset >=
-      this.base.children[0].offsetTop + (5 - 48)                                 // TODO: quick hack to enable same handling for hero
+      this.base.children[0].offsetTop + (5 - 48) // TODO: put into constant
     if (active !== this.state.active) {
       this.setState({ active })
     }
   }
 
   /**
-   * [render description]
-   * @return {[type]} [description]
+   * Register scroll handler and render tabs
+   *
+   * @return {VNode} Virtual node
    */
   render() {
     return (
       <ScrollObserver onScroll={this.handleScroll}>
-        <nav class="md-tabs" data-md-component="tabs"
+        <nav className="md-tabs" data-md-component="tabs"
           data-md-state={this.state.active ? "hidden" : ""}>
           {this.props.children}
         </nav>
       </ScrollObserver>
     )
   }
+}
+
+/* ----------------------------------------------------------------------------
+ * Functions
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Default initializer
+ *
+ * @param {Element} el - Element
+ *
+ * @return {VNode} Virtual node
+ */
+export default el => {
+  return render(
+    <Tabs>
+      {Array.prototype.map.call(el.children, child =>
+        <Clone node={child} />
+      )}
+    </Tabs>, el.parentNode, el
+  )
 }
